@@ -2,25 +2,19 @@
 install.packages("tidyverse")
 library("tidyverse")
 library("dplyr")
-data <- read.csv("./dataset/best_swimmers.csv", sep = ",")
-vector_team_code <- data %>% 
-  select(Team.Code)
-vector_team_code <- as.vector(vector_team_code)
 
-df_cant_swimmers_team <- data %>% 
+
+data <- read.csv("./dataset/best_swimmers.csv", sep = ",")
+swimmers_per_team <- data %>% 
   group_by(Team.Code) %>% 
   mutate(
+    Team.Code = as.factor(Team.Code),
     id.team.code = as.factor(Team.Code),
     id.team.code = as.integer(id.team.code)
     ) %>% 
   summarise(
     addition_team = sum(id.team.code)
   )
-
-View(df_cant_swimmers_team)
-
-for(i in vector_team_code){
-  print(i)
-}
-
-?order
+ordenation_swimmers = order(swimmers_per_team$addition_team,decreasing = TRUE)
+swimmers_per_team = swimmers_per_team[ordenation_swimmers,]
+View(swimmers_per_team)

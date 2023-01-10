@@ -1,9 +1,10 @@
 install.packages("tidyverse")
-library("tidyverse")
+library(tidyverse)
 library("dplyr")
 
 
 data <- read.csv("./dataset/best_swimmers.csv", sep = ",")
+
 swimmers_per_team <- data %>% 
   filter(Gender == "F" & Swim.date > "01-01-1998") %>% 
   group_by(Team.Code,Team.Name) %>% 
@@ -14,9 +15,8 @@ swimmers_per_team <- data %>%
     ) %>% 
   summarise(
     addition_team = sum(id.team.code)
-  )
+  ) %>% 
+  arrange(desc(addition_team))
+#with to verb arrange can reordere dataframes 
 
-
-ordenation_swimmers = order(swimmers_per_team$addition_team,decreasing = TRUE)
-swimmers_per_team = swimmers_per_team[ordenation_swimmers,]
 View(swimmers_per_team)
